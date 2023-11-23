@@ -23,15 +23,30 @@ describe("validateInputValue", () => {
 
 describe("convertCurrency", () => {
   const currencies = [
-    { ccy: "USD", buy: "1.2", base_ccy: "UAH", sale: "1.5" },
-    { ccy: "EUR", buy: "1.5", base_ccy: "UAH", sale: "1.5" },
+    { ccy: "CHF", buy: "40", base_ccy: "UAH", sale: "40." },
+    { ccy: "CZK", buy: "1.5", base_ccy: "UAH", sale: "1.5" },
   ];
 
   it("should convert currency correctly", () => {
-    expect(convertCurrency(10, "USD", "EUR", currencies)).toBe("12.50");
+    const convertedAmount = convertCurrency(4, "CHF", "CZK", currencies);
+    expect(convertedAmount).toBe("106.67");
   });
 
-  it("should throw an error for invalid currency", () => {
-    expect(() => convertCurrency(10, "GBP", "EUR", currencies)).toThrowError();
+  it("should throw an error for invalid 'fromCurrency'", () => {
+    expect(() => convertCurrency(10, "GBP", "EUR", currencies)).toThrowError(
+      "Cannot convert currency. Rates for GBP or EUR not found."
+    );
+  });
+
+  it("should throw an error for invalid 'toCurrency'", () => {
+    expect(() => convertCurrency(10, "USD", "GBP", currencies)).toThrowError(
+      "Cannot convert currency. Rates for USD or GBP not found."
+    );
+  });
+
+  it("should throw an error for both invalid currencies", () => {
+    expect(() => convertCurrency(10, "GBP", "JPY", currencies)).toThrowError(
+      "Cannot convert currency. Rates for GBP or JPY not found."
+    );
   });
 });

@@ -34,14 +34,8 @@ export function convertCurrency(
     (currency: any) => currency.ccy === toCurrency
   )?.buy;
 
-  // console.log(amount);
-  // console.log(fromCurrency);
-  // console.log(toCurrency);
-  // console.log(fromCurrencyRate);
-  // console.log(toCurrencyRate);
-
   if (fromCurrencyRate !== undefined && toCurrencyRate !== undefined) {
-    const convertedAmount = (amount / +fromCurrencyRate) * +toCurrencyRate;
+    const convertedAmount = (amount * +fromCurrencyRate) / +toCurrencyRate;
     return convertedAmount.toFixed(2);
   } else {
     throw new Error(
